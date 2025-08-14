@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: ecommerce
+  template:
+    metadata:
+      labels:
+        app: ecommerce
+    spec:
+      containers:
+      - name: ecommerce
+        image: <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-app:latest
+        ports:
+        - containerPort: 8080

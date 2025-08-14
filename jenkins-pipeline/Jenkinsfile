@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Docker Build & Push') {
+            steps {
+                sh '''
+                docker build -t <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-app:latest .
+                docker push <AWS_ACCOUNT_ID>.dkr.ecr.ap-south-1.amazonaws.com/ecommerce-app:latest
+                '''
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                sh 'kubectl apply -f k8s-manifests/'
+            }
+        }
+    }
+}
